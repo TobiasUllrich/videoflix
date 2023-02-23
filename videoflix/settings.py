@@ -61,22 +61,22 @@ CACHES = {
 "BACKEND": "django_redis.cache.RedisCache",
 "LOCATION": "redis://127.0.0.1:6379/1",
 "OPTIONS": {
-"PASSWORD": 'tullrich11',    
+"PASSWORD": 'redistullrich',    
 "CLIENT_CLASS": "django_redis.client.DefaultClient"
 },
 "KEY_PREFIX": "videoflix"
 }
 }
 
-# RQ_QUEUES = {
-#     'default': {
-#         'HOST': 'localhost',
-#         'PORT': 6379,
-#         'DB': 0,
-#         'PASSWORD': 'tullrich11', #Password for Redis has to be set
-#         'DEFAULT_TIMEOUT': 360,
-#     },
-# }
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+        'PASSWORD': 'redistullrich', #Password for Redis has to be set
+        'DEFAULT_TIMEOUT': 360,
+    },
+}
 
 INTERNAL_IPS = [
     '127.0.0.1',
