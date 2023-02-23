@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Cache time to live is 15 minutes.
+CACHE_TTL = 60 * 15
 
 # Application definition
 
@@ -39,9 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'content.apps.ContentConfig',
+    'debug_toolbar',
+    'django_rq',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -49,6 +54,32 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CACHES = {
+"default": {
+"BACKEND": "django_redis.cache.RedisCache",
+"LOCATION": "redis://127.0.0.1:6379/1",
+"OPTIONS": {
+"PASSWORD": 'tullrich11',    
+"CLIENT_CLASS": "django_redis.client.DefaultClient"
+},
+"KEY_PREFIX": "videoflix"
+}
+}
+
+# RQ_QUEUES = {
+#     'default': {
+#         'HOST': 'localhost',
+#         'PORT': 6379,
+#         'DB': 0,
+#         'PASSWORD': 'tullrich11', #Password for Redis has to be set
+#         'DEFAULT_TIMEOUT': 360,
+#     },
+# }
+
+INTERNAL_IPS = [
+    '127.0.0.1',
 ]
 
 ROOT_URLCONF = 'videoflix.urls'
@@ -120,7 +151,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+
+# This defines the url for static files
+# eg: base-url.com/static/your-js-file.js
+STATIC_URL = '/static/'
+# This is directory name where collectstatic files command will put your app level static files
+STATIC_ROOT = 'staticfiles'
+# This is directory paths where you have to put your project level static files
+# you can put multiple folders here
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
